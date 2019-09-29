@@ -16,8 +16,7 @@ if __name__ == '__main__':
     browser.set_window_size(400, 800)  # 防止广告遮挡验证码
 
     # 用户名/密码
-    username, password = '412927197310241424', '000000'  # 更改为自己的用户名/密码
-    # username, password = 'xxxxxx', 'xxxxxx'  # 更改为自己的用户名/密码
+    username, password = 'xxxxxx', 'xxxxxx'  # 更改为自己的用户名/密码
     browser.find_element_by_id('username').send_keys(username)
     browser.find_element_by_id('pwd').send_keys(password)
 
