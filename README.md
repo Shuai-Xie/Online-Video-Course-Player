@@ -10,7 +10,7 @@ Online video course: http://hnpi.newzhihui.cn/
 ### Dependencies
 - selenium
 - PIL
-- tesserocr
+- tesserocr https://digi.bib.uni-mannheim.de/tesseract/
 
 ### Attention, Please!
 

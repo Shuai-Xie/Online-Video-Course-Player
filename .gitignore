@@ -1,0 +1,10 @@
+.idea
+*/__pycache__
+run.bat
+*.log
+
+imgs
+build
+dist
+main.spec
+chromedriver.exe

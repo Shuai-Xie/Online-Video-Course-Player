@@ -1,9 +1,9 @@
 from PIL import Image, ImageEnhance
-import locale
 import numpy as np
 import time
 
-locale.setlocale(locale.LC_ALL, 'C')
+# import locale
+# locale.setlocale(locale.LC_ALL, 'C')
 import tesserocr  # 识别图片验证码
 
 
@@ -11,6 +11,7 @@ def preprocess_yzm_img(screen_img, roi):
     # 1.切出验证码
     img_yzm = screen_img.crop(roi)
     img_yzm.save('./imgs/yzm.png')  # RGBA格式不能直接用，先保存本地
+
     img_yzm = Image.open('./imgs/yzm.png')
     # 2.图像加强：二值化，对比度
     img_yzm = img_yzm.convert('L')
@@ -39,7 +40,7 @@ def parse_yzm(yzm):
     return res
 
 
-def ocr_yzm(screen_img, roi=(550, 860, 700, 900)):
+def ocr_yzm(screen_img, roi=(268, 425, 343, 447)):
     """
     :param screen_img: screenshot of (400,800) window
     :param roi: default roi is fit for (400,800) window
@@ -68,3 +69,15 @@ def play_video(browser):
     player = browser.find_element_by_xpath("//div[@data-title='点击播放']")  # 相对路径
     player.click()
     print('开始播放!')
+
+
+if __name__ == '__main__':
+    from PIL import Image
+
+    screen_img = Image.open('imgs/screen.png')
+
+    # import matplotlib.pyplot as plt
+    # plt.imshow(screen_img)
+    # plt.show()
+
+    ocr_yzm(screen_img)

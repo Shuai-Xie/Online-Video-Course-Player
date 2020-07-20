@@ -2,8 +2,24 @@ from selenium import webdriver
 from PIL import Image
 import time
 from utils import ocr_yzm, play_video
+import argparse
+import os
 
-chromePath = r'./chromedriver'
+## 更改为自己的用户名/密码
+parser = argparse.ArgumentParser(description="Online Video Course Player")
+parser.add_argument("--username", type=str, default='', help="用户名")
+parser.add_argument("--password", type=str, default='', help="密码")
+args = parser.parse_args()
+
+# 命令行输入
+# username = input('用户名: ')
+# password = input('密码: ')
+# args.username = username
+# args.password = password
+
+# chrome
+this_dir = os.path.dirname(__file__)
+chromePath = f'{this_dir}/chromedriver'
 options = webdriver.ChromeOptions()
 options.add_argument('--ignore-certificate-errors')
 options.add_argument("--test-type")
@@ -16,9 +32,8 @@ if __name__ == '__main__':
     browser.set_window_size(400, 800)  # 防止广告遮挡验证码
 
     # 用户名/密码
-    username, password = 'xxxxxx', 'xxxxxx'  # 更改为自己的用户名/密码
-    browser.find_element_by_id('username').send_keys(username)
-    browser.find_element_by_id('pwd').send_keys(password)
+    browser.find_element_by_id('username').send_keys(args.username)
+    browser.find_element_by_id('pwd').send_keys(args.password)
 
     # 动态验证码
     # 截取网页先保存到本地，再用 tesserocr 识别
@@ -45,10 +60,13 @@ if __name__ == '__main__':
 
     # recover to original window
     browser.maximize_window()
+    #
+
     # 订单页面，显示课程，点击去学习，进入视频课程页面
     curWin = browser.current_window_handle
     # 去学习
-    browser.find_element_by_xpath("//a[contains(text(),'去学习')]").click()
+    # browser.find_element_by_xpath("//a[contains(text(),'去学习')]").click()
+    browser.find_element_by_xpath("//div[@class='play_bg']").click()
 
     handles = browser.window_handles
     for i in handles:  # i is str
@@ -67,7 +85,7 @@ if __name__ == '__main__':
                 video_text = video_info.text.strip()
                 video_title = video_text[:video_text.index('\n')]
                 video_progress = video_text[video_text.index('\n') + 1:]
-                print('{}, id: {}, title: {}, progress:{}'.format(idx + 1, video_id, video_title, video_progress))
+                print('\r{}, id: {}, title: {}, progress:{}'.format(idx + 1, video_id, video_title, video_progress))
                 if video_progress != '100%':
                     video_info.click()  # 进入当前视频页面
                     time.sleep(1)  # 等待页面刷新完成
